@@ -740,12 +740,6 @@ var MockUpdateRequest = function(url, model, mapFind, options) {
 
       Em.run(function () {
         store.findEmbeddedAssociationsForRESTAdapter(modelType, fixture);
-        if (fixture.type) {
-          // assuming its polymorphic if there is a type attribute
-          // is this too bold an assumption?
-          modelName = fixture.type.underscore();
-          modelType = store.modelFor(modelName);
-        }
         model = store.push(modelName, fixture);
         store.setAssociationsForRESTAdapter(modelType, modelName, model);
       });
@@ -1310,7 +1304,7 @@ if (FactoryGuy !== undefined) {
 /*!
  * MockJax - jQuery Plugin to Mock Ajax requests
  *
- * Version:  1.6.1
+ * Version:  1.6.2
  * Released:
  * Home:   https://github.com/jakerella/jquery-mockjax
  * Author:   Jonathan Sharp (http://jdsharp.com)
@@ -1318,7 +1312,7 @@ if (FactoryGuy !== undefined) {
  *
  * Copyright (c) 2014 appendTo, Jordan Kasper
  * NOTE: This repository was taken over by Jordan Kasper (@jakerella) October, 2014
- * 
+ *
  * Dual licensed under the MIT or GPL licenses.
  * http://opensource.org/licenses/MIT OR http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -1422,12 +1416,10 @@ if (FactoryGuy !== undefined) {
 				return null;
 			}
 		}
+
 		// Inspect the data submitted in the request (either POST body or GET query string)
 		if ( handler.data ) {
-//      console.log('request.data', requestSettings.data )
-//      console.log('handler.data', handler.data )
-//      console.log('data equal', isMockDataEqual(handler.data, requestSettings.data) )
-			if  ( ! requestSettings.data || !isMockDataEqual(handler.data, requestSettings.data) ) {
+			if ( ! requestSettings.data || !isMockDataEqual(handler.data, requestSettings.data) ) {
 				// They're not identical, do not mock this request
 				return null;
 			}
@@ -1438,6 +1430,7 @@ if (FactoryGuy !== undefined) {
 			// The request type doesn't match (GET vs. POST)
 			return null;
 		}
+
 		return handler;
 	}
 
@@ -1726,9 +1719,6 @@ if (FactoryGuy !== undefined) {
 				delete window[ jsonp ];
 			} catch(e) {}
 
-			if ( head ) {
-				head.removeChild( script );
-			}
 		};
 	}
 
@@ -1801,7 +1791,6 @@ if (FactoryGuy !== undefined) {
 			}
 
 			mockHandler = getMockForRequest( mockHandlers[k], requestSettings );
-
 			if(!mockHandler) {
 				// No valid mock found for this request
 				continue;
@@ -1853,7 +1842,7 @@ if (FactoryGuy !== undefined) {
 			}
 
 			copyUrlParameters(mockHandler, origSettings);
-		 	//console.log('here copyUrlParameters', 'mockHandler=>',mockHandler, 'requestSettings=>',requestSettings, 'origSettings=>',origSettings)
+
 			(function(mockHandler, requestSettings, origSettings, origHandler) {
 
 				mockRequest = _ajax.call($, $.extend(true, {}, origSettings, {

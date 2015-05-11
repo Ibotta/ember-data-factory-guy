@@ -740,12 +740,6 @@ var MockUpdateRequest = function(url, model, mapFind, options) {
 
       Em.run(function () {
         store.findEmbeddedAssociationsForRESTAdapter(modelType, fixture);
-        if (fixture.type) {
-          // assuming its polymorphic if there is a type attribute
-          // is this too bold an assumption?
-          modelName = fixture.type.underscore();
-          modelType = store.modelFor(modelName);
-        }
         model = store.push(modelName, fixture);
         store.setAssociationsForRESTAdapter(modelType, modelName, model);
       });
